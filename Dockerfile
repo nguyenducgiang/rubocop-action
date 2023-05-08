@@ -1,4 +1,4 @@
-FROM ruby:2.5
+FROM ruby:3.0.5-alpine
 
 LABEL com.github.actions.name="Rubocop checks"
 LABEL com.github.actions.description="Lint your Ruby code in parallel to your builds"
