@@ -84,11 +84,13 @@ def run_rubocop
   errors = nil
   
   Dir.chdir(@GITHUB_WORKSPACE) {
-    stdin, stdout, stderr = Open3.popen3("git diff develop --name-only --diff-filter=AM -- '***.rb'")
+    stdin, stdout, stderr = Open3.popen3("git diff develop --name-only")
     files = stdout.read.split
     
     puts files
     puts "rubocop #{files.join(' ')} --format json"
+    
+    return if files.empty?
     
     errors = JSON.parse(`rubocop #{files.join(' ')} --format json`)
   }
