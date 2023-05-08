@@ -2,11 +2,6 @@ require 'net/http'
 require 'json'
 require 'time'
 
-@GITHUB_SHA = ENV["GITHUB_SHA"]
-@GITHUB_EVENT_PATH = ENV["GITHUB_EVENT_PATH"]
-@GITHUB_TOKEN = ENV["GITHUB_TOKEN"]
-@GITHUB_WORKSPACE = ENV["GITHUB_WORKSPACE"]
-
 puts @GITHUB_SHA
 puts @GITHUB_EVENT_PATH
 puts @GITHUB_TOKEN
@@ -23,6 +18,7 @@ puts @GITHUB_WORKSPACE
   "Content-Type": 'application/json',
   "Accept": 'application/vnd.github.antiope-preview+json',
   "Authorization": "Bearer #{@GITHUB_TOKEN}",
+  "X-GitHub-Api-Version": "2022-11-28",
   "User-Agent": 'rubocop-action'
 }
 
