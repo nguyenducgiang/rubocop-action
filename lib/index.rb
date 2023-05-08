@@ -29,10 +29,14 @@ def create_check
     "status" => "in_progress",
     "started_at" => Time.now.iso8601
   }
+  
+  puts body
 
   http = Net::HTTP.new('api.github.com', 443)
   http.use_ssl = true
   path = "/repos/#{@owner}/#{@repo}/check-runs"
+  
+  puts "Path: #{path}"
 
   resp = http.post(path, body.to_json, @headers)
 
