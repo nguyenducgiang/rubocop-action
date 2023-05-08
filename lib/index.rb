@@ -1,6 +1,7 @@
 require 'net/http'
 require 'json'
 require 'time'
+require 'open3'
 
 @GITHUB_SHA = ENV["GITHUB_SHA"]
 @GITHUB_EVENT_PATH = ENV["GITHUB_EVENT_PATH"]
@@ -82,8 +83,10 @@ end
 def run_rubocop
   annotations = []
   errors = nil
+  stdin, stdout, stderr = Open3.popen3("git diff develop --name-only --diff-filter=AM -- '***.rb'")
+  files = stdout.read.split
   Dir.chdir(@GITHUB_WORKSPACE) {
-    errors = JSON.parse(`rubocop --format json`)
+    errors = JSON.parse(`rubocop #{files.join(' ')} --format json`)
   }
   conclusion = "success"
   count = 0
