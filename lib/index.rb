@@ -40,12 +40,14 @@ def create_check
 
   resp = http.post(path, body.to_json, @headers)
 
-  if resp.code.to_i >= 300
-    raise resp.message
-  end
+#   if resp.code.to_i >= 300
+#     raise resp.message
+#   end
 
   data = JSON.parse(resp.body)
-  return data["id"]
+  puts
+  
+  data["id"]
 end
 
 def update_check(id, conclusion, output)
