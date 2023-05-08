@@ -84,7 +84,7 @@ def run_rubocop
   errors = nil
   
   Dir.chdir(@GITHUB_WORKSPACE) {
-    stdin, stdout, stderr = Open3.popen3("git diff develop --name-only")
+    stdin, stdout, stderr = Open3.popen3("git diff develop HEAD --name-only")
     files = stdout.read.split
     
     puts files
