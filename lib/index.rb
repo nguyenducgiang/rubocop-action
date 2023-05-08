@@ -27,8 +27,7 @@ def create_check
   body = {
     "name" => @check_name,
     "head_sha" => @GITHUB_SHA,
-    "status" => "in_progress",
-    "started_at" => Time.now.iso8601
+    "status" => "in_progress"
   }
   
   puts body
