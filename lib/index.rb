@@ -7,6 +7,11 @@ require 'time'
 @GITHUB_TOKEN = ENV["GITHUB_TOKEN"]
 @GITHUB_WORKSPACE = ENV["GITHUB_WORKSPACE"]
 
+puts @GITHUB_SHA
+puts @GITHUB_EVENT_PATH
+puts @GITHUB_TOKEN
+puts @GITHUB_WORKSPACE
+
 @event = JSON.parse(File.read(ENV["GITHUB_EVENT_PATH"]))
 @repository = @event["repository"]
 @owner = @repository["owner"]["login"]
