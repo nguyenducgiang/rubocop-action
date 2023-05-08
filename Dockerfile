@@ -1,6 +1,6 @@
 FROM ruby:3.0.5-alpine
 
-RUN apt-get -y install git
+RUN apk add git
 
 LABEL com.github.actions.name="Rubocop checks"
 LABEL com.github.actions.description="Lint your Ruby code in parallel to your builds"
