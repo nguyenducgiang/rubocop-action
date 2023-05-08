@@ -82,13 +82,18 @@ end
 def run_rubocop
   annotations = []
   errors = nil
-  stdin, stdout, stderr = Open3.popen3("git diff develop --name-only --diff-filter=AM -- '***.rb'")
-  files = stdout.read.split
+  
   
   puts files
   puts "rubocop #{files.join(' ')} --format json"
   
   Dir.chdir(@GITHUB_WORKSPACE) {
+    stdin, stdout, stderr = Open3.popen3("git diff develop --name-only --diff-filter=AM -- '***.rb'")
+    files = stdout.read.split
+    
+    puts files
+    puts "rubocop #{files.join(' ')} --format json"
+    
     errors = JSON.parse(`rubocop #{files.join(' ')} --format json`)
   }
   conclusion = "success"
