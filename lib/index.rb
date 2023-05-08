@@ -45,7 +45,7 @@ def create_check
 #   end
 
   data = JSON.parse(resp.body)
-  puts
+  puts data
   
   data["id"]
 end
