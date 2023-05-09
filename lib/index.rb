@@ -68,12 +68,14 @@ def run_rubocop
   errors = {}
 
   Dir.chdir(ENV['GITHUB_WORKSPACE']) {
-    files = ENV['CHANGED_FILES'].split
-    puts "rubocop #{files.join(' ')} --format json"
-    
+    files = ENV['CHANGED_FILES'].split.select { |file| file.end_with?('.rb') }
+
     break if files.empty?
-    
-    errors = JSON.parse(`rubocop #{files.join(' ')} --format json`)
+
+    command = "rubocop #{files.join(' ')} --format json --config .rubocop.yml"
+    puts command
+
+    errors = JSON.parse(`#{command}`)
   }
   conclusion = "success"
   count = 0
