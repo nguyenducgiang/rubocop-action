@@ -32,8 +32,9 @@ def create_check
     raise res.message
   end
   
-  puts "ID: #{res.body['id']}"
   puts res.body["id"]
+  puts res
+  puts res.body
   
   res.body["id"]
 end
