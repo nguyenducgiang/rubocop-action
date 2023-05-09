@@ -1,3 +1,4 @@
+require 'httparty'
 require 'net/http'
 require 'json'
 require 'time'
@@ -19,7 +20,7 @@ require 'time'
   "Accept": 'application/vnd.github.antiope-preview+json',
   "Authorization": "Bearer #{@GITHUB_TOKEN}",
   "X-GitHub-Api-Version": "2022-11-28",
-  "User-Agent": 'rubocop-action'
+  "User-Agent": 'rubocop'
 }
 
 def create_check
@@ -29,24 +30,17 @@ def create_check
     "status" => "in_progress"
   }
   
-  puts body
-
-  http = Net::HTTP.new('api.github.com', 443)
-  http.use_ssl = true
-  path = "/repos/#{@owner}/#{@repo}/check-runs"
+  res = HTTParty.post("https://api.github.com/repos/#{@owner}/#{@repo}/check-runs",
+    body: body, headers: @headers)
   
-  puts "Path: #{path}"
+  puts res.code
+  puts res.body
 
-  resp = http.post(path, body.to_json, @headers)
-
-#   if resp.code.to_i >= 300
-#     raise resp.message
-#   end
-
-  data = JSON.parse(resp.body)
-  puts data
+  #   if resp.code.to_i >= 300
+  #     raise resp.message
+  #   end
   
-  data["id"]
+  res.body["id"]
 end
 
 def update_check(id, conclusion, output)
