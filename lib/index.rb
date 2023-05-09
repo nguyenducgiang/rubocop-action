@@ -1,7 +1,6 @@
 require 'net/http'
 require 'json'
 require 'time'
-require 'open3'
 
 @GITHUB_SHA = ENV["GITHUB_SHA"]
 @GITHUB_EVENT_PATH = ENV["GITHUB_EVENT_PATH"]
@@ -84,10 +83,8 @@ def run_rubocop
   errors = nil
   
   Dir.chdir(@GITHUB_WORKSPACE) {
-    stdin, stdout, stderr = Open3.popen3("git diff develop HEAD --name-only")
-    files = stdout.read.split
     
-    puts files
+    files = ENV['CHANGED_FILES'].split
     puts "rubocop #{files.join(' ')} --format json"
     
     return if files.empty?
