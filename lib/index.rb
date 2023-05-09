@@ -9,7 +9,6 @@ require 'time'
 @repository = @event["repository"]
 @owner = @repository["owner"]["login"]
 @repo = @repository["name"]
-puts @event
 
 @check_name = "Rubocop"
 
@@ -31,6 +30,7 @@ def create_check
   url = "https://api.github.com/repos/#{@owner}/#{@repo}/check-runs"
   res = HTTParty.post(url, body: body, headers: @headers)
   
+  puts url
   puts res.code
   puts res.body
 
