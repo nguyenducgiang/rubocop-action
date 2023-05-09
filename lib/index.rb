@@ -33,6 +33,7 @@ def create_check
   end
   
   puts "ID: #{res.body['id']}"
+  puts res.body["id"]
   
   res.body["id"]
 end
