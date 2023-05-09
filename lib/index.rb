@@ -4,21 +4,19 @@ require 'json'
 require 'time'
 
 @GITHUB_SHA = ENV["GITHUB_SHA"]
-@GITHUB_EVENT_PATH = ENV["GITHUB_EVENT_PATH"]
-@GITHUB_TOKEN = ENV["GITHUB_TOKEN"]
-@GITHUB_WORKSPACE = ENV["GITHUB_WORKSPACE"]
 
-@event = JSON.parse(File.read(ENV["GITHUB_EVENT_PATH"]))
+@event = JSON.parse(File.read(ENV['GITHUB_EVENT_PATH']))
 @repository = @event["repository"]
 @owner = @repository["owner"]["login"]
 @repo = @repository["name"]
+puts @event
 
 @check_name = "Rubocop"
 
 @headers = {
   "Content-Type": 'application/json',
   "Accept": 'application/vnd.github.antiope-preview+json',
-  "Authorization": "Bearer #{@GITHUB_TOKEN}",
+  "Authorization": "Bearer #{ENV['GITHUB_TOKEN']}",
   "X-GitHub-Api-Version": "2022-11-28",
   "User-Agent": 'rubocop'
 }
@@ -30,8 +28,8 @@ def create_check
     "status" => "in_progress"
   }
   
-  res = HTTParty.post("https://api.github.com/repos/#{@owner}/#{@repo}/check-runs",
-    body: body, headers: @headers)
+  url = "https://api.github.com/repos/#{@owner}/#{@repo}/check-runs"
+  res = HTTParty.post(url, body: body, headers: @headers)
   
   puts res.code
   puts res.body
@@ -76,8 +74,7 @@ def run_rubocop
   annotations = []
   errors = nil
   
-  Dir.chdir(@GITHUB_WORKSPACE) {
-    
+  Dir.chdir(ENV['GITHUB_WORKSPACE']) {
     files = ENV['CHANGED_FILES'].split
     puts "rubocop #{files.join(' ')} --format json"
     
