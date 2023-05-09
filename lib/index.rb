@@ -77,7 +77,7 @@ def run_rubocop
 
   puts errors
 
-  errors["files"].each do |file|
+  errors["files"]&.each do |file|
     path = file["path"]
     offenses = file["offenses"]
 
