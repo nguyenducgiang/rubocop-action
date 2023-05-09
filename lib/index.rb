@@ -1,7 +1,5 @@
 require 'httparty'
-require 'net/http'
 require 'json'
-require 'time'
 
 @GITHUB_SHA = ENV["GITHUB_SHA"]
 
@@ -29,14 +27,10 @@ def create_check
   
   url = "https://api.github.com/repos/#{@owner}/#{@repo}/check-runs"
   res = HTTParty.post(url, body: body, headers: @headers)
-  
-  puts url
-  puts res.code
-  puts res.body
 
-  #   if resp.code.to_i >= 300
-  #     raise resp.message
-  #   end
+  if resp.code.to_i >= 300
+    raise resp.message
+  end
   
   res.body["id"]
 end
@@ -46,16 +40,12 @@ def update_check(id, conclusion, output)
     "name" => @check_name,
     "head_sha" => @GITHUB_SHA,
     "status" => 'completed',
-    "completed_at" => Time.now.iso8601,
     "conclusion" => conclusion,
     "output" => output
-  }
+  }.to_json
 
-  http = Net::HTTP.new('api.github.com', 443)
-  http.use_ssl = true
-  path = "/repos/#{@owner}/#{@repo}/check-runs/#{id}"
-
-  resp = http.patch(path, body.to_json, @headers)
+  url = "https://api.github.com/repos/#{@owner}/#{@repo}/check-runs/#{id}"
+  res = HTTParty.patch(url, body: body, headers: @headers)
 
   if resp.code.to_i >= 300
     raise resp.message
@@ -72,19 +62,19 @@ end
 
 def run_rubocop
   annotations = []
-  errors = nil
-  
+  errors = {}
+
   Dir.chdir(ENV['GITHUB_WORKSPACE']) {
     files = ENV['CHANGED_FILES'].split
     puts "rubocop #{files.join(' ')} --format json"
     
-    return if files.empty?
+    break if files.empty?
     
     errors = JSON.parse(`rubocop #{files.join(' ')} --format json`)
   }
   conclusion = "success"
   count = 0
-  
+
   puts errors
 
   errors["files"].each do |file|
