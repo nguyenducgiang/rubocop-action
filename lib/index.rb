@@ -14,7 +14,7 @@ require 'time'
 
 @headers = {
   "Content-Type": 'application/json',
-  "Accept": 'application/vnd.github.antiope-preview+json',
+  "Accept": 'application/vnd.github+json',
   "Authorization": "Bearer #{ENV['GITHUB_TOKEN']}",
   "X-GitHub-Api-Version": "2022-11-28",
   "User-Agent": 'rubocop'
