@@ -28,8 +28,8 @@ def create_check
   url = "https://api.github.com/repos/#{@owner}/#{@repo}/check-runs"
   res = HTTParty.post(url, body: body, headers: @headers)
 
-  if resp.code.to_i >= 300
-    raise resp.message
+  if res.code.to_i >= 300
+    raise res.message
   end
   
   res.body["id"]
@@ -47,8 +47,8 @@ def update_check(id, conclusion, output)
   url = "https://api.github.com/repos/#{@owner}/#{@repo}/check-runs/#{id}"
   res = HTTParty.patch(url, body: body, headers: @headers)
 
-  if resp.code.to_i >= 300
-    raise resp.message
+  if res.code.to_i >= 300
+    raise res.message
   end
 end
 
