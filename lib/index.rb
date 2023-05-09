@@ -32,6 +32,7 @@ def create_check
     raise res.message
   end
   
+  puts res.body
   puts "ID: #{res.body["id"]}"
   
   res.body["id"]
@@ -77,18 +78,19 @@ def run_rubocop
   conclusion = "success"
   count = 0
 
-  puts errors
-
   errors["files"]&.each do |file|
     path = file["path"]
     offenses = file["offenses"]
-
+    
     offenses.each do |offense|
       severity = offense["severity"]
       message = offense["message"]
       location = offense["location"]
       annotation_level = @annotation_levels[severity]
       count = count + 1
+      
+      puts message
+      puts location
 
       if annotation_level == "failure"
         conclusion = "failure"
