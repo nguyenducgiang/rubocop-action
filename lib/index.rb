@@ -25,7 +25,7 @@ def create_check
     "name" => @check_name,
     "head_sha" => @GITHUB_SHA,
     "status" => "in_progress"
-  }
+  }.to_json
   
   url = "https://api.github.com/repos/#{@owner}/#{@repo}/check-runs"
   res = HTTParty.post(url, body: body, headers: @headers)
