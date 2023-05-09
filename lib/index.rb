@@ -32,8 +32,7 @@ def create_check
     raise res.message
   end
   
-  puts res.body
-  puts "ID: #{res.body["id"]}"
+  puts "ID: #{res.body['id']}"
   
   res.body["id"]
 end
@@ -48,6 +47,7 @@ def update_check(id, conclusion, output)
   }.to_json
 
   url = "https://api.github.com/repos/#{@owner}/#{@repo}/check-runs/#{id}"
+  puts url
   res = HTTParty.patch(url, body: body, headers: @headers)
 
   if res.code.to_i >= 300
