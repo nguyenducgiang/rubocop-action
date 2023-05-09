@@ -32,11 +32,9 @@ def create_check
     raise res.message
   end
   
-  puts res.body["id"]
-  puts res
-  puts res.body
+  puts res["id"]
   
-  res.body["id"]
+  res["id"]
 end
 
 def update_check(id, conclusion, output)
